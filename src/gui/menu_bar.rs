@@ -4,11 +4,6 @@ use serde::de::Unexpected::Option;
 #[cfg_attr(feature = "serde", serde(default))]
 use serde::Deserialize;
 use serde::Serialize;
-use crate::app::APP_STATE;
-use crate::appstate;
-
-use crate::appstate::InnoVisionState;
-use crate::gui::image_viewer::ImageViewer;
 
 #[derive(Default, Deserialize, Serialize)]
 pub struct MenuBar {
@@ -48,12 +43,6 @@ impl MenuBar{
             .movable(true)
             .default_width(600.)
             .show(ctx, |ui| {
-
-                #[cfg(debug_assertions)]
-                if ui.button("send test msg").clicked() {
-                    APP_STATE.send_message("Test");
-                }
-
 
                 egui::Grid::new("settings").num_columns(2).show(ui, |ui| {
 
