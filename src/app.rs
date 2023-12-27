@@ -1,24 +1,22 @@
 use eframe::epaint::FontFamily::Proportional;
 use eframe::epaint::FontId;
 use egui::TextStyle::{Body, Button, Heading, Monospace, Small};
-use crate::gui::{fonts, menu_bar};
-
-#[derive(serde::Deserialize, serde::Serialize)]
-#[serde(default)]
+use serde::{Deserialize, Serialize};
+use crate::gui::{fonts, menu_bar, main_frame, charts};
+#[derive( Deserialize, Serialize)]
 pub struct App {
-    label: String,
     value: f32,
     menu_bar: menu_bar::MenuBar,
+    main_frame: main_frame::MainFrame
 }
 
 impl Default for App {
     fn default() -> Self {
-        unsafe {
             Self {
-                label: "Hello World!".to_owned(),
                 value: 0.7,
                 menu_bar: menu_bar::MenuBar::new(),
-            }
+                main_frame: main_frame::MainFrame::new()
+
         }
     }
 }
@@ -36,17 +34,15 @@ impl eframe::App for App {
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 
-        //catppuccin_egui::set_theme(ctx, catppuccin_egui::MACCHIATO);
-        // self.image_layout.update(ctx, _frame);
-
         self.menu_bar.update(ctx, _frame);
+        self.main_frame.update(ctx, _frame);
 
         let mut style = (*ctx.style()).clone();
         style.text_styles = [
-            (Heading, FontId::new(30.0, Proportional)),
+            (Heading, FontId::new(17.0, Proportional)),
             (Body, FontId::new(15.0, Proportional)),
             (Monospace, FontId::new(14.0, Proportional)),
-            (Button, FontId::new(18.0, Proportional)),
+            (Button, FontId::new(15.0, Proportional)),
             (Small, FontId::new(10.0, Proportional)),
         ]
             .into();
