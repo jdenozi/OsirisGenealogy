@@ -1,0 +1,122 @@
+use std::option::Option;
+use std::ptr::null;
+use egui::{CentralPanel, Color32, PointerButton, Pos2, Slider, SliderOrientation, TextStyle};
+use serde::{Deserialize, Serialize};
+use crate::gui::charts::sun_burst;
+
+
+#[derive(Deserialize, Serialize)]
+enum Mode {
+    Graph,
+    SunBurst,
+}
+
+impl Default for Mode {
+    fn default() -> Self {
+        Self::Graph
+    }
+}
+
+#[derive(Default, Deserialize, Serialize)]
+pub struct MainFrame {
+    mode: Mode,
+    layout_color: Color32,
+    sun_burst: sun_burst::SunburstChart,
+    sun_burst_depth: i8,
+    sun_burst_zoom: i8,
+    sun_burst_pos: Option<Pos2>,
+    sun_burst_drag: bool
+
+}
+
+impl MainFrame {
+    pub  fn new() -> Self {
+        MainFrame {
+            mode: Mode::Graph,
+            layout_color: Default::default(),
+            sun_burst: sun_burst::SunburstChart::new(),
+            sun_burst_depth: 1,
+            sun_burst_zoom: 0,
+            sun_burst_pos:Option::default(),
+            sun_burst_drag: false,
+        }
+    }
+
+    pub fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        CentralPanel::default().show(ctx, |ui| {
+            ui.horizontal(|ui| {
+                if ui.button("Graph").clicked() {
+                    self.mode = Mode::Graph;
+                }
+                if ui.button("Sunburst Chart").clicked() {
+                    self.mode = Mode::SunBurst;
+                }
+
+
+
+            });
+
+            match self.mode {
+                Mode::Graph => {
+                }
+                Mode::SunBurst => unsafe {
+
+                    if ctx.input(|i| i.scroll_delta.y.abs() > 0.0) {
+                        let scroll_delta = ctx.input(|i| i.scroll_delta.y) as i8;
+                        let new_zoom = self.sun_burst_zoom + (scroll_delta / 10);
+                        self.sun_burst_zoom = new_zoom.clamp(-5, 20);
+
+                    }
+                    if ctx.input(|i| i.pointer.button_pressed(PointerButton::Primary)) {
+                        self.sun_burst_drag = true;
+                    }
+                    if ctx.input(|i| i.pointer.button_released(PointerButton::Primary)){
+                        self.sun_burst_drag = false;
+                    }
+
+                    if(self.sun_burst_drag){
+                        let delta = ctx.input(|i| i.pointer.delta());
+                        self.sun_burst_pos = Some(self.sun_burst_pos.unwrap_or_default() + delta);
+                    }
+
+
+
+                    egui::Window::new("Options").show(ctx, |ui| {
+                        ui.horizontal(|ui| {
+                            ui.group(|ui| {
+                                ui.vertical(|ui| {
+                                    if ui.button("Center").clicked() {
+                                        self.sun_burst_pos = None;
+                                    }
+                                    ui.checkbox(&mut true, "collapsible");
+                                    ui.checkbox(&mut true, "resizable");
+                                });
+                            });
+                            ui.vertical(|ui| {
+                                ui.add(
+                                    Slider::new(&mut self.sun_burst_depth, (1i8)..=(10i8))
+                                        .orientation(SliderOrientation::Horizontal)
+                                        .text("depth")
+                                        .step_by(1.0)
+                                );
+
+                                ui.add(
+                                    Slider::new(&mut self.sun_burst_zoom, (-5i8)..=(20i8))
+                                        .orientation(SliderOrientation::Horizontal)
+                                        .text("zoom")
+                                        .step_by(1.0)
+                                );
+                            });
+                        });
+                    });
+
+                    if(self.sun_burst_pos == Option::None){
+                        self.sun_burst_pos = Option::from(ui.available_rect_before_wrap().center());
+                    }
+
+                    self.sun_burst.draw(ui.painter(), &ui.available_rect_before_wrap(), self.sun_burst_depth, self.sun_burst_zoom, self.sun_burst_pos);
+                }
+            }
+        });
+    }
+}
