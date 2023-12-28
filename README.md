@@ -1,76 +1,65 @@
-# eframe template
+# OsirisGenealogy
 
-[![dependency status](https://deps.rs/repo/github/emilk/OsirisGenealogy/status.svg)](https://deps.rs/repo/github/emilk/OsirisGenealogy)
-[![Build Status](https://github.com/emilk/OsirisGenealogy/workflows/CI/badge.svg)](https://github.com/emilk/OsirisGenealogy/actions?workflow=CI)
+OsirisGenealogy is a genealogy software that leverages the GEDCOM file format. It provides users with the ability to update existing genealogy data or create entirely new projects. The software offers unique visualization features, allowing users to explore their family trees through both sunburst charts and oriented graphs.
+Features
 
-This is a template repo for [eframe](https://github.com/emilk/egui/tree/master/crates/eframe), a framework for writing apps using [egui](https://github.com/emilk/egui/).
+    GEDCOM File Format: OsirisGenealogy supports the widely used GEDCOM (Genealogical Data Communication) file format, making it easy to import and manage genealogical data.
 
-The goal is for this to be the simplest way to get started writing a GUI app in Rust.
+    Data Editing: Users can efficiently update and modify their genealogical data directly within the software, ensuring accuracy and completeness.
 
-You can compile your app natively or for the web, and share it using Github Pages.
+    Project Creation: OsirisGenealogy allows users to start new genealogy projects, facilitating the creation of comprehensive family trees.
 
-## Getting started
+    Visualization:
+        Sunburst Chart: Visualize your family tree in an intuitive sunburst chart, providing a unique and hierarchical representation of relationships.
+        Graph Oriented: Explore family connections through a graph-oriented view, offering a different perspective on ancestry.
 
-Start by clicking "Use this template" at https://github.com/emilk/OsirisGenealogy/ or follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template).
+    Written in Rust with Egui: OsirisGenealogy is crafted using the Rust programming language and the Egui framework, ensuring performance, reliability, and a modern user interface.
 
-Change the name of the crate: Chose a good name for your project, and change the name to it in:
-* `Cargo.toml`
-    * Change the `package.name` from `OsirisGenealogy` to `your_crate`.
-    * Change the `package.authors`
-* `main.rs`
-    * Change `OsirisGenealogy::App` to `your_crate::App`
-* `index.html`
-    * Change the `<title>eframe template</title>` to `<title>your_crate</title>`. optional.
-* `assets/sw.js`
-  * Change the `'./OsirisGenealogy.js'` to `./your_crate.js` (in `filesToCache` array)
-  * Change the `'./OsirisGenealogy_bg.wasm'` to `./your_crate_bg.wasm` (in `filesToCache` array)
+# Getting Started
+## Installation
 
-### Learning about egui
+To build and run OsirisGenealogy locally, follow these steps:
 
-`src/app.rs` contains a simple example app. This is just to give some inspiration - most of it can be removed if you like.
+- Clone the repository:
 
-The official egui docs are at <https://docs.rs/egui>. If you prefer watching a video introduction, check out <https://www.youtube.com/watch?v=NtUkr_z7l84>. For inspiration, check out the [the egui web demo](https://emilk.github.io/egui/index.html) and follow the links in it to its source code.
+```bash
+git clone https://github.com/jdenozi/OsirisGenealogy.git
+```
 
-### Testing locally
+- Navigate to the project directory:
 
-Make sure you are using the latest version of stable rust by running `rustup update`.
+```bash
+cd OsirisGenealogy
+```
 
-`cargo run --release`
+Build and run the software:
+```bash
+    cargo run --release
+```
 
-On Linux you need to first run:
+## Usage
 
-`sudo apt-get install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libssl-dev`
+- **Importing GEDCOM Files**:
+    Launch OsirisGenealogy and open an existing project or create a new one.
+    Import your genealogical data using the GEDCOM file format.
+ 
+- **Updating Data**:
+    Use the intuitive user interface to update and edit genealogical information.
 
-On Fedora Rawhide you need to run:
+- **Visualization**:
+    Explore your family tree through the sunburst chart or graph-oriented view.
 
-`dnf install clang clang-devel clang-tools-extra libxkbcommon-devel pkg-config openssl-devel libxcb-devel gtk3-devel atk fontconfig-devel`
+- **Saving Projects**:
+    Save your project for future access and updates.
 
-### Web Locally
+## Screenshots
 
-You can compile your app to [WASM](https://en.wikipedia.org/wiki/WebAssembly) and publish it as a web page.
+Include screenshots or GIFs demonstrating the software's user interface and features.
 
-We use [Trunk](https://trunkrs.dev/) to build for web target.
-1. Install the required target with `rustup target add wasm32-unknown-unknown`.
-2. Install Trunk with `cargo install --locked trunk`.
-3. Run `trunk serve` to build and serve on `http://127.0.0.1:8080`. Trunk will rebuild automatically if you edit the project.
-4. Open `http://127.0.0.1:8080/index.html#dev` in a browser. See the warning below.
 
-> `assets/sw.js` script will try to cache our app, and loads the cached version when it cannot connect to server allowing your app to work offline (like PWA).
-> appending `#dev` to `index.html` will skip this caching, allowing us to load the latest builds during development.
+## Contributing
 
-### Web Deploy
-1. Just run `trunk build --release`.
-2. It will generate a `dist` directory as a "static html" website
-3. Upload the `dist` directory to any of the numerous free hosting websites including [GitHub Pages](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
-4. we already provide a workflow that auto-deploys our app to GitHub pages if you enable it.
-> To enable Github Pages, you need to go to Repository -> Settings -> Pages -> Source -> set to `gh-pages` branch and `/` (root).
->
-> If `gh-pages` is not available in `Source`, just create and push a branch called `gh-pages` and it should be available.
+If you're interested in contributing to OsirisGenealogy, please check out our Contributing Guidelines.
+License
 
-You can test the template app at <https://emilk.github.io/OsirisGenealogy/>.
-
-## Updating egui
-
-As of 2023, egui is in active development with frequent releases with breaking changes. [OsirisGenealogy](https://github.com/emilk/OsirisGenealogy/) will be updated in lock-step to always use the latest version of egui.
-
-When updating `egui` and `eframe` it is recommended you do so one version at the time, and read about the changes in [the egui changelog](https://github.com/emilk/egui/blob/master/CHANGELOG.md) and [eframe changelog](https://github.com/emilk/egui/blob/master/crates/eframe/CHANGELOG.md).
+OsirisGenealogy is licensed under the MIT License.
