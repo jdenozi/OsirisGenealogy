@@ -13,7 +13,7 @@ enum Mode {
 
 impl Default for Mode {
     fn default() -> Self {
-        Self::Graph
+        Self::SunBurst
     }
 }
 
@@ -51,6 +51,10 @@ impl MainFrame {
                 if ui.button("Sunburst Chart").clicked() {
                     self.mode = Mode::SunBurst;
                 }
+
+
+
+
 
 
 
