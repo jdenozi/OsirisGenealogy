@@ -5,6 +5,8 @@ use crate::app::App;
 
 mod gui;
 mod app;
+mod model;
+mod app_state;
 
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> eframe::Result<()> {

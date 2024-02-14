@@ -1,22 +1,30 @@
+use std::cell::RefCell;
+use std::rc::Rc;
 use eframe::epaint::FontFamily::Proportional;
 use eframe::epaint::FontId;
 use egui::TextStyle::{Body, Button, Heading, Monospace, Small};
 use serde::{Deserialize, Serialize};
-use crate::gui::{fonts, menu_bar, main_frame, charts};
-#[derive( Deserialize, Serialize)]
+use crate::app_state::AppState;
+use crate::gui::{fonts};
+use crate::gui::main_frame::MainFrame;
+use crate::gui::menu_bar::MenuBar;
+
+#[derive(Deserialize, Serialize)]
 pub struct App {
     value: f32,
-    menu_bar: menu_bar::MenuBar,
-    main_frame: main_frame::MainFrame
+    state: Rc<RefCell<AppState>>,
+    menu_bar: MenuBar,
+    main_frame: MainFrame,
 }
 
 impl Default for App {
     fn default() -> Self {
-            Self {
-                value: 0.7,
-                menu_bar: menu_bar::MenuBar::new(),
-                main_frame: main_frame::MainFrame::new()
-
+        let state: Rc<RefCell<AppState>> = Rc::new(RefCell::new(AppState::default()));
+        Self {
+            value: 0.7,
+            state: state.clone(),
+            menu_bar: MenuBar::new(state.clone()),
+            main_frame: MainFrame::new(state.clone()),
         }
     }
 }
@@ -29,7 +37,7 @@ impl App {
 }
 
 impl eframe::App for App {
-    fn save(&mut self, storage: &mut dyn eframe::Storage) {
+    fn save(&mut self, _storage: &mut dyn eframe::Storage) {
     }
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
